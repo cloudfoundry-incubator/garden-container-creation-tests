@@ -2,8 +2,8 @@
 
 set -xe
 
-exec > test.out
-exec 2>$1
+exec > $1.out
+exec 2>&1
 
 suffix=$1
 
