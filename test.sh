@@ -2,10 +2,11 @@
 
 set -xe
 
-exec > $1.out
+exec > test.out
 exec 2>&1
 
 suffix=$1
+numtimes=$2
 
 check_state() {
   name=$1
@@ -20,7 +21,7 @@ check_state() {
 
 touch results.csv
 
-while true; do
+for i in `seq $numtimes`; do
 
   cf push westley-$suffix -p assets/apps/westley -m 128M 
   cf push max-$suffix -p assets/apps/max -m 512M
