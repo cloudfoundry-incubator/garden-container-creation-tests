@@ -27,7 +27,7 @@ touch results.csv
 
 for i in `seq $numtimes`; do
 
-  echo "Pushing apps..."
+  echo "[$suffix] Pushing apps..."
 
   cf push westley-$suffix -p assets/apps/westley -m 128M  &> $suffix.out
   cf push max-$suffix -p assets/apps/max -m 512M &> $suffix.out
@@ -37,7 +37,7 @@ for i in `seq $numtimes`; do
   scale_up_start_time=$(date +%s)
 
   for i in `seq 20` ; do
-    echo "Scaling apps, round $i..."
+    echo "[$suffix] Scaling apps, round $i..."
 
     cf scale humperdink-$suffix -i $(( 2*$i )) &> $suffix.out
     cf scale westley-$suffix -i $(( 8*$i )) &> $suffix.out
@@ -51,12 +51,12 @@ for i in `seq $numtimes`; do
 
   scale_up_end_time=$(date +%s)
 
-  echo "Sleeping for 1 minute..."
+  echo "[$suffix] Sleeping for 1 minute..."
   sleep 60
 
   scale_down_start_time=$(date +%s)
 
-  echo "Deleting the apps..."
+  echo "[$suffix] Deleting the apps..."
   cf d -f humperdink-$suffix &> $suffix.out
   cf d -f westley-$suffix &> $suffix.out
   cf d -f max-$suffix &> $suffix.out
@@ -66,7 +66,7 @@ for i in `seq $numtimes`; do
 
   echo "$scale_up_start_time,$scale_up_end_time,$scale_down_start_time,$scale_down_end_time" >> results.csv
 
-  echo "Sleeping for 30 seconds..."
+  echo "[$suffix] Sleeping for 30 seconds..."
   sleep 30
 done
 
